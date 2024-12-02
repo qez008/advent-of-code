@@ -1,0 +1,90 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnnaa7b33j432"]
+
+[ext_resource type="Script" path="res://src/rocks.gd" id="1_1qp67"]
+[ext_resource type="Texture2D" uid="uid://032swo2jqhxg" path="res://icon.svg" id="2_xq726"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dh80u"]
+size = Vector2(1000, 100)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_a2fnr"]
+size = Vector2(10, 10)
+
+[node name="rocks" type="Node2D"]
+script = ExtResource("1_1qp67")
+sand = Color(0.223529, 0.760784, 0.823529, 1)
+rock = Color(0.286275, 0.223529, 0.568627, 1)
+air = Color(0.392157, 0.360784, 0.870588, 1)
+
+[node name="Icon" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.137255, 0.137255, 0.137255, 1)
+position = Vector2(500, 500)
+scale = Vector2(10, 10)
+texture = ExtResource("2_xq726")
+
+[node name="top" type="StaticBody2D" parent="."]
+position = Vector2(500, 2.08165e-12)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="top"]
+position = Vector2(2.08165e-12, -50)
+shape = SubResource("RectangleShape2D_dh80u")
+
+[node name="bottom" type="StaticBody2D" parent="."]
+position = Vector2(500, 1000)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="bottom"]
+position = Vector2(2.08165e-12, 50)
+shape = SubResource("RectangleShape2D_dh80u")
+
+[node name="left" type="StaticBody2D" parent="."]
+position = Vector2(2.08165e-12, 500)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="left"]
+position = Vector2(2.08165e-12, 50)
+shape = SubResource("RectangleShape2D_dh80u")
+
+[node name="right" type="StaticBody2D" parent="."]
+position = Vector2(1000, 500)
+rotation = 1.5708
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="right"]
+position = Vector2(2.08165e-12, -50)
+shape = SubResource("RectangleShape2D_dh80u")
+
+[node name="round_rocks" type="Node2D" parent="."]
+visible = false
+
+[node name="rock" type="RigidBody2D" parent="round_rocks"]
+position = Vector2(320, 172)
+metadata/_edit_group_ = true
+
+[node name="Icon2" type="Sprite2D" parent="round_rocks/rock"]
+position = Vector2(5, 5)
+scale = Vector2(0.078, 0.078)
+texture = ExtResource("2_xq726")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="round_rocks/rock"]
+position = Vector2(5, 5)
+shape = SubResource("RectangleShape2D_a2fnr")
+
+[node name="square_rocks" type="Node2D" parent="."]
+visible = false
+modulate = Color(0.894118, 0.203922, 0.376471, 1)
+
+[node name="rock" type="StaticBody2D" parent="square_rocks"]
+position = Vector2(330, 242)
+metadata/_edit_group_ = true
+
+[node name="Icon" type="Sprite2D" parent="square_rocks/rock"]
+position = Vector2(5, 5)
+scale = Vector2(0.078, 0.078)
+texture = ExtResource("2_xq726")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="square_rocks/rock"]
+position = Vector2(5, 5)
+shape = SubResource("RectangleShape2D_a2fnr")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(500, 500)
+zoom = Vector2(2, 2)

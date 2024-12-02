@@ -1,0 +1,21 @@
+ea4bc82a6ad023ab7ee23ee620429895
+::res://::1702643995
+icon.svg::CompressedTexture2D::1814196349539852192::1702471202::1702471209::1::::<><>::
+::res://font/::1702481895
+Monocode-Regular-V01.02b.ttf::FontFile::3393163568207680973::1702481886::1702481895::1::::<><>::
+::res://font/mono_2/::1702481890
+' Mono Bold.ttf::FontFile::6375046410338218780::1702481646::1702481651::1::::<><>::
+' Mono Light.ttf::FontFile::1110863315881824026::1702481646::1702481651::1::::<><>::
+' Mono Regular.ttf::FontFile::3906154933624255659::1702481646::1702481651::1::::<><>::
+::res://in/::1702640187
+day_13_input.txt::TextFile::-1::1702474633::0::1::::<><>::
+day_13_sample.txt::TextFile::-1::1702474644::0::1::::<><>::
+day_14.gd::GDScript::-1::1702640187::0::1::::Day14Input<>Object<>::
+::res://src/::1702643985
+display.gd::GDScript::-1::1702485152::0::1::::Display<>Control<>::
+display.tscn::PackedScene::2808125446061574342::1702485734::0::1::::<><>::res://src/display.gd<>uid://bolw545yni6nh
+main.gd::GDScript::-1::1702542083::0::1::::<>Node2D<>::
+main.tscn::PackedScene::6877253062571779014::1702485734::0::1::::<><>::res://src/main.gd
+pattern.gd::GDScript::-1::1702485679::0::1::::Pattern<>Object<>::
+rocks.gd::GDScript::-1::1702643985::0::1::::<>Node2D<>::
+rocks.tscn::PackedScene::8098555612778507791::1702643922::0::1::::<><>::res://src/rocks.gd<>uid://032swo2jqhxg::::res://icon.svg

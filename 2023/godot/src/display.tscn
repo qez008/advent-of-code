@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://bgajoextcv80i"]
+
+[ext_resource type="Script" path="res://src/display.gd" id="1_d0twx"]
+[ext_resource type="FontFile" uid="uid://bolw545yni6nh" path="res://font/Monocode-Regular-V01.02b.ttf" id="2_tf3k0"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_wx4ws"]
+font = ExtResource("2_tf3k0")
+font_size = 24
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1wqje"]
+blend_mode = 3
+
+[node name="display" type="CenterContainer"]
+offset_right = 1152.0
+offset_bottom = 648.0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+script = ExtResource("1_d0twx")
+
+[node name="rows" type="VBoxContainer" parent="."]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="row_0" type="HBoxContainer" parent="rows"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="col_0" type="Label" parent="rows/row_0"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "?"
+label_settings = SubResource("LabelSettings_wx4ws")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ColorRect" type="ColorRect" parent="rows/row_0/col_0"]
+material = SubResource("CanvasItemMaterial_1wqje")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0745098, 0.694118, 0.827451, 1)

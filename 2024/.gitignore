@@ -1,8 +1,5 @@
 ## Ignore inputs
 **/src/test/resources/input
-2023/advent_of_rust/src/inputs
-2023/godot/in
-2022/input
 
 .gradle
 build/

@@ -1,0 +1,17 @@
+[package]
+name = "advent_of_rust"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+indoc = "2"
+regex = "1.10.2"
+strum = { version = "0.25.0", features = [] }
+strum_macros = { version = "0.25.3", features = [] }
+bitvec = { version = "1.0.1", features = [] }
+sorted-list = "0.2"
+pathfinding = "4.8.0"
+indexmap = "2.1.0"
+itertools = "0.10.3"
