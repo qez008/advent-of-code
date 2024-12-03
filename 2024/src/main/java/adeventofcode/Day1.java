@@ -2,11 +2,8 @@ package adeventofcode;
 
 import com.google.common.collect.Streams;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -21,17 +18,11 @@ class Day1 {
         this.listA = new ArrayList<>();
         this.listB = new ArrayList<>();
 
-        var path = Paths.get(location);
-
-        try (BufferedReader reader = Files.newBufferedReader(path)) {
-            while (reader.readLine() instanceof String line) {
-                var parts = line.split(" {3}");
-                listA.add(Integer.parseInt(parts[0]));
-                listB.add(Integer.parseInt(parts[1]));
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Util.fileForEach(location, line -> {
+            var parts = Arrays.stream(line.split(" {3}")).map(Integer::parseInt).toList();
+            listA.add(parts.get(0));
+            listB.add(parts.get(1));
+        });
     }
 
     int one() {

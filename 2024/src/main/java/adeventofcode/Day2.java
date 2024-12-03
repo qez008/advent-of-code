@@ -1,11 +1,5 @@
 package adeventofcode;
 
-import org.checkerframework.common.value.qual.IntRange;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,35 +7,18 @@ import java.util.stream.IntStream;
 
 class Day2 {
 
-    private static Integer sign(int x) {
-        return x < 0 ? -1 : 1;
-    }
-
     private final List<List<Integer>> reports;
 
     Day2(String input) {
         this.reports = new ArrayList<>();
-        try (BufferedReader reader = Files.newBufferedReader(Path.of(input))) {
-            while (reader.readLine() instanceof String line) {
-                reports.add(Arrays.stream(line.split(" ")).map(Integer::parseInt).toList());
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Util.fileForEach(input, line -> {
+            var report = Arrays.stream(line.split(" ")).map(Integer::parseInt).toList();
+            reports.add(report);
+        });
     }
 
     long one() {
-        return reports
-                .stream()
-                .map(report -> {
-                    var diffs = new ArrayList<Integer>();
-                    for (var i = 0; i < report.size() - 1; i++) {
-                        diffs.add(report.get(i) - report.get(i + 1));
-                    }
-                    return diffs;
-                })
-                .filter(this::isSafe)
-                .count();
+        return reports.stream().map(this::createDiffs).filter(this::isSafe).count();
     }
 
     long two() {
@@ -57,15 +34,17 @@ class Day2 {
                             modifiedReport.remove(i);
                             return modifiedReport;
                         })
-                        .map(modifiedReport -> {
-                            var diffs = new ArrayList<Integer>();
-                            for (var j = 0; j < modifiedReport.size() - 1; j++) {
-                                diffs.add(modifiedReport.get(j + 1) - modifiedReport.get(j));
-                            }
-                            return diffs;
-                        }))
+                        .map(this::createDiffs))
                 .filter(alts -> alts.anyMatch(this::isSafe))
                 .count();
+    }
+
+    private List<Integer> createDiffs(List<Integer> report) {
+        var diffs = new ArrayList<Integer>();
+        for (var j = 0; j < report.size() - 1; j++) {
+            diffs.add(report.get(j + 1) - report.get(j));
+        }
+        return diffs;
     }
 
     private boolean isSafe(List<Integer> diffs) {
@@ -76,5 +55,9 @@ class Day2 {
             }
         }
         return true;
+    }
+
+    private static Integer sign(int x) {
+        return x < 0 ? -1 : 1;
     }
 }
