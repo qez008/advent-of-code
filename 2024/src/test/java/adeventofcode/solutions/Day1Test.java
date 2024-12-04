@@ -1,12 +1,10 @@
-package adeventofcode;
+package adeventofcode.solutions;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+class Day1Test {
 
-class Day3Test {
-
-    private final Day3 day = new Day3("src/test/resources/input/day3.txt");
+    private final Day1 day = new Day1("src/test/resources/day1.txt");
 
     @Test
     void one() {
@@ -17,5 +15,4 @@ class Day3Test {
     void two() {
         System.out.println("2) " + day.two());
     }
-
 }

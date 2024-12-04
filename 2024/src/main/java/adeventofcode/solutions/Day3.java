@@ -1,4 +1,6 @@
-package adeventofcode;
+package adeventofcode.solutions;
+
+import adeventofcode.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;

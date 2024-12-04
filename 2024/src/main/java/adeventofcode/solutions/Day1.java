@@ -1,5 +1,6 @@
-package adeventofcode;
+package adeventofcode.solutions;
 
+import adeventofcode.util.Util;
 import com.google.common.collect.Streams;
 
 import java.util.ArrayList;

@@ -1,10 +1,10 @@
-package adeventofcode;
+package adeventofcode.solutions;
 
 import org.junit.jupiter.api.Test;
 
-class Day1Test {
+class Day2Test {
 
-    private final Day1 day = new Day1("src/test/resources/day1.txt");
+    private final Day2 day = new Day2("src/test/resources/input/day2-orb.txt");
 
     @Test
     void one() {
@@ -15,4 +15,5 @@ class Day1Test {
     void two() {
         System.out.println("2) " + day.two());
     }
+
 }

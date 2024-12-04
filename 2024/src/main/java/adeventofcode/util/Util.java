@@ -1,4 +1,4 @@
-package adeventofcode;
+package adeventofcode.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,4 +19,5 @@ public class Util {
             throw new RuntimeException(e);
         }
     }
+
 }
