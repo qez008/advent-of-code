@@ -67,16 +67,14 @@ class Day6 {
     }
 
     long two() {
-        var start = System.currentTimeMillis();
+
         Predicate<IntVec2> loopsPredicate = obstacleIndex -> {
             obstacleIndex.setValueIn(grid, '#');
             var result = pathFinder().isLoop();
             obstacleIndex.setValueIn(grid, '.');
             return result;
         };
-        var visitedPositions = pathFinder().path().parallelStream().map(PathEntry::position).distinct();
-        var ans = visitedPositions.filter(index -> index != startPosition).filter(loopsPredicate).count();
-        System.out.println("et: " + (System.currentTimeMillis() - start));
-        return ans;
+        var visitedPositions = pathFinder().path().stream().map(PathEntry::position).distinct();
+        return visitedPositions.filter(index -> index != startPosition).filter(loopsPredicate).count();
     }
 }
