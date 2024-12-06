@@ -1,6 +1,6 @@
 package adeventofcode.solutions;
 
-import adeventofcode.util.Index2d;
+import adeventofcode.util.IntVec2;
 import lombok.With;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ class Day4 {
             new Vec2(1, 1), new Vec2(-1, 1), new Vec2(-1, -1), new Vec2(1, -1));
 
     private final List<List<Character>> grid;
-    private final List<Index2d> indices;
+    private final List<IntVec2> indices;
 
     Day4(String path) throws IOException {
         this.grid = Files
@@ -26,7 +26,7 @@ class Day4 {
                 .stream()
                 .map(string -> string.chars().mapToObj(x -> (char) x).toList())
                 .toList();
-        this.indices = Index2d.createStream(grid.size(), grid.getFirst().size()).toList();
+        this.indices = IntVec2.indexStream(grid).toList();
     }
 
     private record Vec2(@With int x, @With int y) {
