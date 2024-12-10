@@ -1,6 +1,6 @@
 package adeventofcode.solutions;
 
-import adeventofcode.util.IntVec2;
+import adeventofcode.util.IntVector2;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,7 +14,7 @@ import java.util.function.Predicate;
 class Day6 {
 
     private final List<ArrayList<Character>> grid;
-    private final IntVec2 startPosition;
+    private final IntVector2 startPosition;
 
     Day6(String input) {
         try (var lines = Files.lines(Path.of(input))) {
@@ -25,7 +25,7 @@ class Day6 {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.startPosition = IntVec2
+        this.startPosition = IntVector2
                 .indexStream(grid)
                 .filter(i -> i.getValueFrom(grid) == '^')
                 .findAny()
@@ -34,11 +34,11 @@ class Day6 {
 
     record Result(Set<PathEntry> path, boolean isLoop) {}
 
-    record PathEntry(IntVec2 position, IntVec2 direction) {}
+    record PathEntry(IntVector2 position, IntVector2 direction) {}
 
     Result pathFinder() {
         var position = startPosition;
-        var direction = new IntVec2(0, -1);
+        var direction = new IntVector2(0, -1);
 
         var path = new HashSet<PathEntry>();
         path.add(new PathEntry(startPosition, direction));
@@ -68,7 +68,7 @@ class Day6 {
 
     long two() {
 
-        Predicate<IntVec2> loopsPredicate = obstacleIndex -> {
+        Predicate<IntVector2> loopsPredicate = obstacleIndex -> {
             obstacleIndex.setValueIn(grid, '#');
             var result = pathFinder().isLoop();
             obstacleIndex.setValueIn(grid, '.');

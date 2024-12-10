@@ -1,6 +1,6 @@
 package adeventofcode.solutions;
 
-import adeventofcode.util.Util;
+import adeventofcode.util.AocUtil;
 import com.google.common.collect.Streams;
 
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ class Day1 {
         this.listA = new ArrayList<>();
         this.listB = new ArrayList<>();
 
-        Util.fileForEach(location, line -> {
+        AocUtil.fileForEach(location, line -> {
             var parts = Arrays.stream(line.split(" {3}")).map(Integer::parseInt).toList();
             listA.add(parts.get(0));
             listB.add(parts.get(1));

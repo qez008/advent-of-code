@@ -1,7 +1,7 @@
 package adeventofcode.solutions;
 
-import adeventofcode.util.IntVec2;
-import com.google.common.collect.Lists;
+import adeventofcode.util.IntVector2;
+import adeventofcode.util.AocUtil;
 import io.vavr.control.Try;
 
 import java.io.IOException;
@@ -33,18 +33,19 @@ class Day10 implements Solution {
         return startPoints().map(i -> (long) nonRec(i).size()).reduce(0L, Long::sum);
     }
 
-    private Stream<IntVec2> startPoints() {
-        return IntVec2.indexStream(topologyMap).filter(i -> i.getValueFrom(topologyMap) == 0);
+    private Stream<IntVector2> startPoints() {
+        return IntVector2.indexStream(topologyMap).filter(i -> i.getValueFrom(topologyMap) == 0);
     }
 
-    private List<IntVec2> nonRec(IntVec2 start) {
+    private List<IntVector2> nonRec(IntVector2 start) {
         var positions = List.of(start);
         for (var h = 1; h <= 9; h++) {
             final var height = h;
-            positions = Lists
-                    .cartesianProduct(positions, IntVec2.CARDINALS)
-                    .stream()
-                    .map(product -> product.getFirst().plus(product.getLast()))
+            positions = AocUtil
+                    .cartesianProduct(positions, IntVector2.CARDINALS)
+                    .map(product -> product.apply(IntVector2::plus))
+                    // This may throw an index out-of-bounds exceptions in which case the
+                    // position does not have the height we are looking for.
                     .filter(position -> Try.of(() -> position.getValueFrom(topologyMap) == height).getOrElse(false))
                     .toList();
         }

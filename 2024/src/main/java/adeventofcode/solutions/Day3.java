@@ -1,6 +1,6 @@
 package adeventofcode.solutions;
 
-import adeventofcode.util.Util;
+import adeventofcode.util.AocUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ class Day3 {
 
     Day3(String input) {
         this.lines = new ArrayList<>();
-        Util.fileForEach(input, lines::add);
+        AocUtil.fileForEach(input, lines::add);
     }
 
     int one() {
