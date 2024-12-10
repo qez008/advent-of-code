@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -29,20 +28,15 @@ class Day10 implements Solution {
         }
     }
 
-    public long one() {
-        return IntVec2
-                .indexStream(topologyMap)
-                .filter(i -> i.getValueFrom(topologyMap) == START_HEIGHT)
-                .map(i -> {
-                    var result = ninesReachedFrom(i, 0, List.of(i));
-                    return (long) new HashSet<>(result).size();
-                })
-                .reduce(0L, Long::sum);
+    private Stream<IntVec2> startPoints() {
+        return IntVec2.indexStream(topologyMap).filter(i -> i.getValueFrom(topologyMap) == START_HEIGHT);
     }
 
-    private List<IntVec2> ninesReachedFrom(IntVec2 currentPosition, int currentHeight, List<IntVec2> path) {
+    private List<List<IntVec2>> pathsFrom(IntVec2 currentPosition, int currentHeight, List<IntVec2> path) {
         if (currentHeight == END_HEIGHT) {
-            return List.of(currentPosition);
+            var newPath = new ArrayList<>(path);
+            newPath.add(currentPosition);
+            return List.of(newPath);
         }
         var options = IntVec2.CARDINALS.stream().map(currentPosition::plus).filter(i -> {
             try {
@@ -51,21 +45,26 @@ class Day10 implements Solution {
                 return false;
             }
         });
-        return options.map(i -> {
-            var newPath = new ArrayList<>(path);
-            newPath.add(i);
-            return ninesReachedFrom(i, currentHeight + 1, newPath);
-        }).reduce(List.of(), (a, b) -> Stream.of(a, b).flatMap(List::stream).toList());
+        return options
+                .map(i -> {
+                    var newPath = new ArrayList<>(path);
+                    newPath.add(i);
+                    return pathsFrom(i, currentHeight + 1, newPath);
+                })
+                .reduce(List.of(), (a, b) -> Stream.concat(a.stream(), b.stream()).toList());
+    }
+
+    public long one() {
+        return startPoints()
+                .map(i -> pathsFrom(i, 0, List.of(i))
+                        .stream()
+                        .map(List::getLast)
+                        .distinct()
+                        .count())
+                .reduce(0L, Long::sum);
     }
 
     public long two() {
-        return IntVec2
-                .indexStream(topologyMap)
-                .filter(i -> i.getValueFrom(topologyMap) == START_HEIGHT)
-                .map(i -> {
-                    var result = ninesReachedFrom(i, 0, List.of(i));
-                    return (long)result.size();
-                })
-                .reduce(0L, Long::sum);
+        return startPoints().map(i -> (long) pathsFrom(i, 0, List.of(i)).size()).reduce(0L, Long::sum);
     }
 }
