@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 repositories {
@@ -7,15 +8,24 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib:2.1.0'
+
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
     compileOnly 'org.projectlombok:lombok:1.18.36'
 
-
     implementation 'com.google.guava:guava:33.3.1-jre'
+    implementation 'io.vavr:vavr:0.10.5'
+    implementation 'org.apache.commons:commons-math3:3.6.1'
 
     testImplementation platform('org.junit:junit-bom:5.10.0')
     testImplementation 'org.junit.jupiter:junit-jupiter'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
 
 test {
     useJUnitPlatform()
+}
+kotlin {
+    jvmToolchain(21)
 }
