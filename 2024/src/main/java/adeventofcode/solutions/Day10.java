@@ -46,7 +46,9 @@ class Day10 implements Solution {
                     .map(product -> product.apply(IntVector2::plus))
                     // This may throw an index out-of-bounds exceptions in which case the
                     // position does not have the height we are looking for.
-                    .filter(position -> Try.of(() -> position.getValueFrom(topologyMap) == height).getOrElse(false))
+                    .filter(position -> Try
+                            .of(() -> position.getValueFrom(topologyMap) == height)
+                            .getOrElse(false))
                     .toList();
         }
         return positions;
