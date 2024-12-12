@@ -30,7 +30,7 @@ class Day10 implements Solution {
         for (var h = 1; h <= 9; h++) {
             final var height = h;
             positions = AocUtil
-                    .cartesianProduct(positions, IntVector2.CARDINALS)
+                    .cartesianProduct(positions, IntVector2.CARDINAL_DIRECTIONS)
                     .map(product -> product.apply(IntVector2::plus))
                     // This may throw an index out-of-bounds exceptions in which case the
                     // position does not have the height we are looking for.

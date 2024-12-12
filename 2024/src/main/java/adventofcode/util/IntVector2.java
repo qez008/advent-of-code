@@ -13,7 +13,7 @@ public record IntVector2(int x, int y) {
     public static final IntVector2 LEFT = new IntVector2(-1, 0);
     public static final IntVector2 RIGHT = new IntVector2(1, 0);
 
-    public static final List<IntVector2> CARDINALS = List.of(UP, DOWN, LEFT, RIGHT);
+    public static final List<IntVector2> CARDINAL_DIRECTIONS = List.of(UP, DOWN, LEFT, RIGHT);
 
     public IntVector2 plus(IntVector2 other) {
         return new IntVector2(x + other.x, y + other.y);
