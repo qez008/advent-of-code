@@ -14,6 +14,28 @@ public record IntVector2(int x, int y) {
     public static final IntVector2 RIGHT = new IntVector2(1, 0);
 
     public static final List<IntVector2> CARDINAL_DIRECTIONS = List.of(UP, DOWN, LEFT, RIGHT);
+    public static final List<IntVector2> VERTICAL_DIRECTIONS = List.of(UP, DOWN);
+    public static final List<IntVector2> HORIZONTAL_DIRECTIONS = List.of(LEFT, RIGHT);
+
+    public static IntVector2 parse(String str) {
+        return switch (str) {
+            case "<" -> IntVector2.LEFT;
+            case ">" -> IntVector2.RIGHT;
+            case "^" -> IntVector2.UP;
+            case "v" -> IntVector2.DOWN;
+            default -> throw new IllegalStateException("Unexpected value: " + str);
+        };
+    }
+
+    public char toChar() {
+        return switch (this) {
+            case IntVector2 v when v.equals(IntVector2.LEFT) -> '<';
+            case IntVector2 v when v.equals(IntVector2.RIGHT) -> '>';
+            case IntVector2 v when v.equals(IntVector2.UP) -> '^';
+            case IntVector2 v when v.equals(IntVector2.DOWN) -> 'v';
+            default -> throw new IllegalStateException("Unexpected value: " + this);
+        };
+    }
 
     public IntVector2 plus(IntVector2 other) {
         return new IntVector2(x + other.x, y + other.y);
