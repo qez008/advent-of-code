@@ -1,7 +1,6 @@
 package adventofcode.solutions;
 
 import adventofcode.util.IntVector2;
-import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import org.junit.jupiter.api.Test;
 
@@ -14,25 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day13Test implements AocTest {
 
-    @Test
-    void sampleOne() {
-        assertEquals(480, sample().part1());
-    }
-
-    // Too low:
-    // - 10408
-    @Test
-    void one() {
-        assertEquals(10408, real().part1());
-    }
-
     @Override
     public Solution parse(String input) throws Exception {
         var machines = Lists
                 .partition(Files.readAllLines(Path.of(input)), 4)
                 .stream()
                 .map(sublist -> {
-                    System.out.println(Joiner.on("\n").join(sublist));
                     var buttonA = new Day13.Button(findButtonDir(sublist.get(0)), 3);
                     var buttonB = new Day13.Button(findButtonDir(sublist.get(1)), 1);
                     return new Day13.Machine(
@@ -66,4 +52,22 @@ class Day13Test implements AocTest {
         }
         throw new RuntimeException("failed to parse " + input);
     }
+
+    @Test
+    void sampleOne() {
+        assertEquals(480, sample().part1());
+    }
+
+    // Too low:
+    // - 10408
+    @Test
+    void one() {
+        assertEquals(32067, real().part1());
+    }
+
+    @Test
+    void two() {
+        assertEquals(92871736253789L, real().part2());
+    }
+
 }

@@ -3,8 +3,8 @@ package adventofcode.solutions;
 import adventofcode.util.IntVector2;
 import lombok.RequiredArgsConstructor;
 
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 public class Day13 implements Solution {
@@ -16,41 +16,41 @@ public class Day13 implements Solution {
     private final List<Machine> machines;
 
     public long part1() {
-        return machines.stream().map(this::solve).reduce(0L, Long::sum);
+        return machines
+                .stream()
+                .map(x -> solve(x, 0L))
+                .filter(Optional::isPresent)
+                .map(Optional::orElseThrow)
+                .reduce(0L, Long::sum);
     }
 
     public long part2() {
-        return 0;
+        return machines
+                .stream()
+                .map(x -> solve(x, 10000000000000L))
+                .filter(Optional::isPresent)
+                .map(Optional::orElseThrow)
+                .reduce(0L, Long::sum);
     }
 
-    private long solve(Machine machine) {
-        System.out.println(machine);
-        var mem = new HashMap<MemEntry, Optional<Long>>();
-        var start = new IntVector2(0, 0);
-        return rec(100, start, machine, mem).orElse(0L);
+    private Optional<Long> solve(Machine machine, long offset) {
+        long ax = machine.buttonA.dir.x();
+        long ay = machine.buttonA.dir.y();
+
+        long bx = machine.buttonB.dir.x();
+        long by = machine.buttonB.dir.y();
+
+        long px = machine.prize.x() + offset;
+        long py = machine.prize.y() + offset;
+
+        long d = ax * by - ay * bx;
+        long di = px * by - py * bx;
+        long dj = py * ax - px * ay;
+
+        if (di % d == 0 && dj % d == 0) {
+            return Optional.of((long) 3 * di / d + dj / d);
+        }
+        return Optional.empty();
     }
 
-    record MemEntry(IntVector2 position, int i) {}
-
-    private Optional<Long> rec(int i, IntVector2 position, Machine machine, HashMap<MemEntry, Optional<Long>> mem) {
-        if (position.equals(machine.prize)) {
-            return Optional.of(0L);
-        }
-        if (i == 0 || position.x() > machine.prize.x() || position.y() > machine.prize.y()) {
-            return Optional.empty();
-        }
-
-        var key = new MemEntry(position, i);
-
-        if (mem.get(key) instanceof Optional<Long> value) {
-            return value;
-        }
-
-        var a = rec(i - 1, position.plus(machine.buttonA.dir), machine, mem).map(x -> x + machine.buttonA.cost);
-        var b = rec(i - 1, position.plus(machine.buttonB.dir), machine, mem).map(x -> x + machine.buttonB.cost);
-
-        var value = Stream.of(a, b).filter(Optional::isPresent).map(Optional::get).min(Long::compareTo);
-        mem.put(key, value);
-        return value;
-    }
 }
