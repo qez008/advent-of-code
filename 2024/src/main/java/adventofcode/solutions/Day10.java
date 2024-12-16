@@ -33,7 +33,7 @@ class Day10 implements Solution {
                     .cartesianProduct(positions, IntVector2.CARDINAL_DIRECTIONS)
                     .map(product -> product.apply(IntVector2::plus))
                     // This may throw an index out-of-bounds exceptions in which case the
-                    // position does not have the height we are looking for.
+                    // pos does not have the height we are looking for.
                     .filter(position -> Try
                             .of(() -> position.getValueFrom(topologyMap) == height)
                             .getOrElse(false))

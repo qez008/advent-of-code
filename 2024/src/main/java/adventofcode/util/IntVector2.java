@@ -2,6 +2,7 @@ package adventofcode.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -13,9 +14,9 @@ public record IntVector2(int x, int y) {
     public static final IntVector2 LEFT = new IntVector2(-1, 0);
     public static final IntVector2 RIGHT = new IntVector2(1, 0);
 
-    public static final List<IntVector2> CARDINAL_DIRECTIONS = List.of(UP, DOWN, LEFT, RIGHT);
-    public static final List<IntVector2> VERTICAL_DIRECTIONS = List.of(UP, DOWN);
-    public static final List<IntVector2> HORIZONTAL_DIRECTIONS = List.of(LEFT, RIGHT);
+    public static final Set<IntVector2> CARDINAL_DIRECTIONS = Set.of(UP, DOWN, LEFT, RIGHT);
+    public static final Set<IntVector2> VERTICAL_DIRECTIONS = Set.of(UP, DOWN);
+    public static final Set<IntVector2> HORIZONTAL_DIRECTIONS = Set.of(LEFT, RIGHT);
 
     public static IntVector2 parse(String str) {
         return switch (str) {
@@ -51,6 +52,10 @@ public record IntVector2(int x, int y) {
 
     public IntVector2 rotateClockwise90() {
         return new IntVector2(-y, x);
+    }
+
+    public IntVector2 rotateCounterClockwise90() {
+        return new IntVector2(y, -x);
     }
 
     public List<IntVector2> perpendicular() {

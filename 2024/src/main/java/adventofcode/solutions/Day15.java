@@ -1,7 +1,6 @@
 package adventofcode.solutions;
 
 import adventofcode.util.IntVector2;
-import com.google.common.base.Joiner;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
@@ -24,7 +23,7 @@ class Day15 implements Solution {
             if (!boxes.contains(pos)) {
                 return Optional.of(pos);
             }
-            // The current position contains a box, move to the next
+            // The current pos contains a box, move to the next
             pos = pos.plus(dir);
         }
     }
@@ -42,7 +41,7 @@ class Day15 implements Solution {
             }
             if (boxes.contains(nextPosition)) {
                 var openPos = openPosition(nextPosition, instruction, boxes);
-                // Update position if the box can be pushed
+                // Update pos if the box can be pushed
                 if (openPos.isPresent()) {
                     boxes.remove(nextPosition);
                     boxes.add(openPos.get());
@@ -56,9 +55,12 @@ class Day15 implements Solution {
         return boxes;
     }
 
+    private long gpsCoords(IntVector2 v) {
+        return (long) v.y() * 100 + v.x();
+    }
 
     public long part1() {
-        return simulate().stream().map(v -> (long) v.y() * 100 + v.x()).reduce(0L, Long::sum);
+        return simulate().stream().map(this::gpsCoords).reduce(0L, Long::sum);
     }
 
     record Box(IntVector2 left, IntVector2 right) {
@@ -79,27 +81,26 @@ class Day15 implements Solution {
         if (!boxes.containsKey(pos)) {
             return true;
         }
-        return switch (dir) {
-            case IntVector2 v when IntVector2.VERTICAL_DIRECTIONS.contains(v) -> {
-                if (boxes.containsKey(pos)) {
-                    var box = boxes.get(pos);
-                    affectedBoxes.add(box);
-                    yield canPush(box.left.plus(v), v, boxes, affectedBoxes)
-                          && canPush(box.right.plus(v), v, boxes, affectedBoxes);
-                }
-                yield true;
+        if (IntVector2.VERTICAL_DIRECTIONS.contains(dir)) {
+            if (boxes.containsKey(pos)) {
+                var box = boxes.get(pos);
+                affectedBoxes.add(box);
+                var canPushLeft = canPush(box.left.plus(dir), dir, boxes, affectedBoxes);
+                var canPushRight = canPush(box.right.plus(dir), dir, boxes, affectedBoxes);
+                return canPushLeft && canPushRight;
             }
-            case IntVector2 h when IntVector2.HORIZONTAL_DIRECTIONS.contains(h) -> {
-                if (boxes.containsKey(pos)) {
-                    var box = boxes.get(pos);
-                    affectedBoxes.add(box);
-                    var d = h.equals(IntVector2.LEFT) ? box.left : box.right;
-                    yield canPush(d.plus(h), h, boxes, affectedBoxes);
-                }
-                yield true;
+            return true;
+        }
+        if (IntVector2.HORIZONTAL_DIRECTIONS.contains(dir)) {
+            if (boxes.containsKey(pos)) {
+                var box = boxes.get(pos);
+                affectedBoxes.add(box);
+                var p = dir.equals(IntVector2.LEFT) ? box.left : box.right;
+                return canPush(p.plus(dir), dir, boxes, affectedBoxes);
             }
-            default -> throw new IllegalStateException("Unexpected value: " + dir);
-        };
+            return true;
+        }
+        throw new IllegalStateException("Unexpected value: " + dir);
     }
 
     private void updateBox(Box box, Map<IntVector2, Box> boxes, IntVector2 dir) {
@@ -116,7 +117,6 @@ class Day15 implements Solution {
 
     private HashMap<IntVector2, Box> simulateWide() {
         var position = startPosition;
-
         var boxes = new HashMap<IntVector2, Box>();
 
         for (var pos : startingBoxes) {
@@ -127,16 +127,12 @@ class Day15 implements Solution {
 
         for (var c : instructions.split("")) {
             var instruction = IntVector2.parse(c);
-
-//            printGrid(boxes, position, instruction);
             var nextPosition = position.plus(instruction);
             if (walls.contains(nextPosition)) {
-                // Hit a wall, do nothing:
                 continue;
             }
             var affectedBoxes = new HashSet<Box>();
             if (boxes.containsKey(nextPosition)) {
-                affectedBoxes.add(boxes.get(nextPosition));
                 if (canPush(nextPosition, instruction, boxes, affectedBoxes)) {
                     for (var box : affectedBoxes) {
                         updateBox(box, boxes, instruction);
@@ -147,36 +143,10 @@ class Day15 implements Solution {
             }
             position = nextPosition;
         }
-
-//        printGrid(boxes, position, null);
-
         return boxes;
     }
 
-    private void printGrid(HashMap<IntVector2, Box> boxes, IntVector2 position, IntVector2 dir) {
-        var w = 22;
-        var h = 12;
-        var grid = new Character[h][w];
-        for (var i = 0; i < h; i++) {
-            for (var j = 0; j < w; j++) {
-                grid[i][j] = '.';
-            }
-        }
-        for (var box : boxes.values().stream().distinct().toList()) {
-            grid[box.left.y()][box.left.x()] = '[';
-            grid[box.right.y()][box.right.x()] = ']';
-        }
-        for (var wall : walls) {
-            grid[wall.y()][wall.x()] = '#';
-        }
-        grid[position.y()][position.x()] = (dir == null) ? '@' : dir.toChar();
-        for (var row : grid) {
-            System.out.println(Joiner.on("").join(row));
-        }
-    }
-
     public long part2() {
-        return simulateWide().values().stream().distinct().map(Box::left)
-                .map(v -> (long) v.y() * 100 + v.x()).reduce(0L, Long::sum);
+        return simulateWide().values().stream().distinct().map(Box::left).map(this::gpsCoords).reduce(0L, Long::sum);
     }
 }

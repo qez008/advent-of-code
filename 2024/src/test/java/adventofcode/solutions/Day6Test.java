@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 class Day6Test {
 
     // Too low:
-    // - 5100 (did not count the starting position)
+    // - 5100 (did not count the starting pos)
     // Correct: 5101
     @Test
     void one() {
