@@ -14,7 +14,7 @@ class Day11 implements Solution {
 
     private final List<Long> initialLine;
 
-    public long part1() {
+    public Integer part1() {
         var line = initialLine;
         for (int i = 0; i < 25; i++) {
             line = line.stream().flatMap(this::transformStone).toList();
@@ -39,7 +39,7 @@ class Day11 implements Solution {
         return Stream.of(stoneSymbol * 2024L);
     }
 
-    public long part2() {
+    public Long part2() {
         var memoization = new HashMap<MemEntry, Long>();
         return initialLine.stream().map(symbol -> stonesAfter(75, symbol, memoization)).reduce(0L, Long::sum);
     }

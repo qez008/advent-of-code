@@ -11,22 +11,22 @@ class Day12Test implements AocTest {
 
     @Test
     void samplePart1() {
-        assertEquals(1930, sample().part1());
+        assertEquals(1930L, sample().part1());
     }
 
     @Test
     void part1() {
-        assertEquals(1363682, real().part1());
+        assertEquals(1363682L, real().part1());
     }
 
     @Test
     void samplePart2() {
-        assertEquals(1206, sample().part2());
+        assertEquals(1206L, sample().part2());
     }
 
     @Test
     void part2() {
-        assertEquals(787680, real().part2());
+        assertEquals(787680L, real().part2());
     }
 
     @Override

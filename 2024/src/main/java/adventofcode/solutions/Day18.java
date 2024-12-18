@@ -5,7 +5,6 @@ import adventofcode.util.Rect;
 import lombok.RequiredArgsConstructor;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @RequiredArgsConstructor
 class Day18 implements Solution {
@@ -13,11 +12,11 @@ class Day18 implements Solution {
     private final IntVector2 exit;
     private final List<IntVector2> fallingBytes;
 
-    public long part1() {
-        return solve(1024).orElse(0L);
+    public Integer part1() {
+        return solve(fallingBytes.size() >= 1024 ? 1024 : 12).orElse(-1);
     }
 
-    public long part2() {
+    public String part2() {
         var range = new IntVector2(0, fallingBytes.size());
 
         while (range.x() != range.y() - 1) {
@@ -25,39 +24,39 @@ class Day18 implements Solution {
             range = solve(middle).isPresent() ? new IntVector2(middle, range.y()) : new IntVector2(range.x(), middle);
         }
 
-        System.out.println(fallingBytes.get(range.x()));
-        return range.x();
+        var result = fallingBytes.get(range.x());
+        return result.x() + "," + result.y();
     }
 
-    record State(IntVector2 pos, List<IntVector2> path) {
+    record State(IntVector2 pos, int steps) {
+
         int value(IntVector2 exit) {
-            return path.size() + pos.manhattanDistance(exit);
+            return steps + pos.manhattanDistance(exit);
         }
     }
 
-    Optional<Long> solve(int fallen) {
+    Optional<Integer> solve(int fallen) {
         var bounds = new Rect(IntVector2.ZERO, exit);
         var memorySpace = createSpace(exit, fallingBytes, fallen);
 
         var queue = new PriorityQueue<State>(Comparator.comparing(s -> s.value(exit)));
-        queue.add(new State(IntVector2.ZERO, List.of(IntVector2.ZERO)));
+        queue.add(new State(IntVector2.ZERO, 0));
 
         var visited = new HashSet<IntVector2>();
 
-        while (queue.poll() instanceof State(IntVector2 pos, List<IntVector2> path)) {
+        while (queue.poll() instanceof State(IntVector2 pos, int steps)) {
             if (pos.equals(exit)) {
-                return Optional.of(path.size() - 1L);
+                return Optional.of(steps);
             }
             for (var dir : IntVector2.CARDINAL_DIRECTIONS) {
                 var nextPos = pos.plus(dir);
                 if (visited.contains(nextPos)) {
                     continue;
                 }
-                var nextPath = Stream.concat(path.stream(), Stream.of(pos)).toList();
                 if (!bounds.contains(nextPos) || pos.getValueFrom(memorySpace) == '#') {
                     continue;
                 }
-                queue.add(new State(nextPos, nextPath));
+                queue.add(new State(nextPos, steps + 1));
             }
             visited.add(pos);
         }

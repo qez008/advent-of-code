@@ -37,13 +37,13 @@ class Day17Test implements AocTest {
 
     @Test
     void example1() {
-        assertEquals(0, sample().part1());
+        assertEquals("5,7,3,0", sample().part1());
     }
 
 
     @Test
     void one() {
-        assertEquals(0, real().part1());
+        assertEquals("4,3,2,6,4,5,3,2,4", real().part1());
     }
 
     @Test

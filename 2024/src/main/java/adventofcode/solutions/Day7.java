@@ -19,7 +19,7 @@ public class Day7 implements Solution {
         return new Tuple2<>(value, numbers);
     }
 
-    public long part1() {
+    public Long part1() {
         List<BiFunction<Long, Long, Long>> operators = List.of(
                 (a, b) -> a + b,
                 (a, b) -> a * b
@@ -27,7 +27,7 @@ public class Day7 implements Solution {
         return solve(equations, operators);
     }
 
-    public long part2() {
+    public Long part2() {
         List<BiFunction<Long, Long, Long>> operators = List.of(
                 (a, b) -> a + b,
                 (a, b) -> a * b,

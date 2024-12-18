@@ -15,17 +15,17 @@ class Day8Test implements AocTest {
 
     @Test
     void part1Sample() {
-        assertEquals(14L, sample().part1());
+        assertEquals(14, sample().part1());
     }
 
     @Test
     void part1() {
-        assertEquals(247L, real().part1());
+        assertEquals(247, real().part1());
     }
 
     @Test
     void part2Sample() {
-        assertEquals(34, sample().part2());
+        assertEquals(34L, sample().part2());
     }
 
     // Too low:

@@ -59,7 +59,7 @@ class Day15 implements Solution {
         return (long) v.y() * 100 + v.x();
     }
 
-    public long part1() {
+    public Long part1() {
         return simulate().stream().map(this::gpsCoords).reduce(0L, Long::sum);
     }
 
@@ -146,7 +146,7 @@ class Day15 implements Solution {
         return boxes;
     }
 
-    public long part2() {
+    public Long part2() {
         return simulateWide().values().stream().distinct().map(Box::left).map(this::gpsCoords).reduce(0L, Long::sum);
     }
 }

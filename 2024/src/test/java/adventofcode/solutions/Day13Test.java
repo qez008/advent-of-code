@@ -55,14 +55,14 @@ class Day13Test implements AocTest {
 
     @Test
     void sampleOne() {
-        assertEquals(480, sample().part1());
+        assertEquals(480L, sample().part1());
     }
 
     // Too low:
     // - 10408
     @Test
     void one() {
-        assertEquals(32067, real().part1());
+        assertEquals(32067L, real().part1());
     }
 
     @Test

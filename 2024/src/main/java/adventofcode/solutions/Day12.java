@@ -13,7 +13,7 @@ public class Day12 implements Solution {
 
     private final List<List<Character>> garden;
 
-    public long part1() {
+    public Long part1() {
         return mapRegion((region, edges) -> {
             var area = region.size();
             var perimeter = edges.size();
@@ -21,7 +21,7 @@ public class Day12 implements Solution {
         });
     }
 
-    public long part2() {
+    public Long part2() {
         return mapRegion((region, edges) -> {
             var area = region.size();
             var sides = countSides(edges);

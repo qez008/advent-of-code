@@ -5,10 +5,10 @@ public interface Solution {
     /**
      * @return answer to part 1
      */
-    long part1();
+    Object part1();
 
     /**
      * @return answer to part 2
      */
-    long part2();
+    Object part2();
 }

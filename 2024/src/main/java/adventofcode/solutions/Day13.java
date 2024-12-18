@@ -15,7 +15,7 @@ public class Day13 implements Solution {
 
     private final List<Machine> machines;
 
-    public long part1() {
+    public Long part1() {
         return machines
                 .stream()
                 .map(x -> solve(x, 0L))
@@ -24,7 +24,7 @@ public class Day13 implements Solution {
                 .reduce(0L, Long::sum);
     }
 
-    public long part2() {
+    public Long part2() {
         return machines
                 .stream()
                 .map(x -> solve(x, 10000000000000L))

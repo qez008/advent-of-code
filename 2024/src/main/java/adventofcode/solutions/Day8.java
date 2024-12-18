@@ -28,7 +28,7 @@ class Day8 implements Solution {
         return grid.get(index.y()).set(index.x(), '#');
     }
 
-    public long part1() {
+    public Integer part1() {
         Set<IntVector2> antinodePositions = new HashSet<>();
         for (var entry : antennaMap.entrySet()) {
             var antennas = entry.getValue();
@@ -55,7 +55,7 @@ class Day8 implements Solution {
         return antinodePositions.size();
     }
 
-    public long part2() {
+    public Long part2() {
         for (var entry : antennaMap.entrySet()) {
             var antennas = entry.getValue();
             for (IntVector2 a : antennas) {

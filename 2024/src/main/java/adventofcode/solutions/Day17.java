@@ -84,9 +84,8 @@ class Day17 implements Solution {
         return Joiner.on(",").join(output);
     }
 
-    public long part1() {
-        System.out.println(solve(program, initial));
-        return 0;
+    public String part1() {
+        return solve(program, initial);
     }
 
     private long solve2(int[] subProgram, int pointer, long acc) {
@@ -106,7 +105,7 @@ class Day17 implements Solution {
         throw new RuntimeException("Could not solve find a at pointer: " + pointer +". Acc=" + acc);
     }
 
-    public long part2() {
+    public Long part2() {
 //        var subProgram = Arrays.copyOfRange(program, 0, program.length - 2);
 //        var ans = solve2(subProgram, program.length - 1, 0);
         // hack:
@@ -118,7 +117,7 @@ class Day17 implements Solution {
                 return a;
             }
         }
-        return 0;
+        return 0L;
     }
 
 }

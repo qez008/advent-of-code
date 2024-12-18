@@ -20,7 +20,7 @@ class Day14 implements Solution {
 
     private final List<Robot> robots;
 
-    public long part1() {
+    public Long part1() {
         var size = realSize;
         var finalPositions = robots.stream().map(robot -> simulate(robot, size));
         var quadrants = finalPositions
@@ -49,7 +49,7 @@ class Day14 implements Solution {
         return new IntVector2(a, b);
     }
 
-    public long part2() {
+    public Long part2() {
         var states = io.vavr.collection.List
                 .ofAll(robots)
                 .zip(robots.stream().map(Robot::start).toList());
@@ -85,6 +85,6 @@ class Day14 implements Solution {
             }
         }
 
-        return 0;
+        return 0L;
     }
 }

@@ -34,16 +34,16 @@ class Day18Test implements AocTest {
 
     @Test
     void one() {
-        assertEquals(22, real().part1());
+        assertEquals(374, real().part1());
     }
 
     @Test
     void example2() {
-        assertEquals(0, sample().part2());
+        assertEquals("6,1", sample().part2());
     }
 
     @Test
     void two() {
-        assertEquals(0, real().part2());
+        assertEquals("30,12", real().part2());
     }
 }

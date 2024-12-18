@@ -58,11 +58,11 @@ class Day16 implements Solution {
         return new Result(best, seats.size());
     }
 
-    public long part1() {
+    public Long part1() {
         return cheapestPathV2().cost;
     }
 
-    public long part2() {
+    public Long part2() {
         return cheapestPathV2().seats;
     }
 }

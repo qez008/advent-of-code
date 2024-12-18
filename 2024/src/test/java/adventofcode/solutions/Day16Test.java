@@ -31,22 +31,22 @@ class Day16Test implements AocTest {
 
     @Test
     void example1() {
-        assertEquals(11048, sample().part1());
+        assertEquals(11048L, sample().part1());
     }
 
     @Test
     void one() {
-        assertEquals(98416, real().part1());
+        assertEquals(98416L, real().part1());
     }
 
     @Test
     void example2() {
-        assertEquals(64, sample().part2());
+        assertEquals(64L, sample().part2());
     }
 
     // too low: 463, 464, 468
     @Test
     void two() {
-        assertEquals(471, real().part2());
+        assertEquals(471L, real().part2());
     }
 }

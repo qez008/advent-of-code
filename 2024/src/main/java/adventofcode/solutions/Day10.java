@@ -13,11 +13,11 @@ class Day10 implements Solution {
 
     private final List<List<Integer>> topologyMap;
 
-    public long part1() {
+    public Long part1() {
         return startPoints().map(i -> nonRec(i).stream().distinct().count()).reduce(0L, Long::sum);
     }
 
-    public long part2() {
+    public Long part2() {
         return startPoints().map(i -> (long) nonRec(i).size()).reduce(0L, Long::sum);
     }
 
