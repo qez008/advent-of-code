@@ -18,6 +18,8 @@ public record IntVector2(int x, int y) {
     public static final Set<IntVector2> VERTICAL_DIRECTIONS = Set.of(UP, DOWN);
     public static final Set<IntVector2> HORIZONTAL_DIRECTIONS = Set.of(LEFT, RIGHT);
 
+    public static final IntVector2 ZERO = new IntVector2(0, 0);
+
     public static IntVector2 parse(String str) {
         return switch (str) {
             case "<" -> IntVector2.LEFT;
@@ -62,6 +64,10 @@ public record IntVector2(int x, int y) {
         return this == UP || this == DOWN
                 ? List.of(LEFT, RIGHT)
                 : List.of(UP, DOWN);
+    }
+
+    public int manhattanDistance(IntVector2 other) {
+        return Math.abs(x - other.x) + Math.abs(y - other.y);
     }
 
     public <T> T getValueFrom(List<? extends List<T>> grid) {
