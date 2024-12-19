@@ -1,5 +1,6 @@
 package adventofcode.util;
 
+import com.google.common.base.Joiner;
 import io.vavr.Tuple2;
 
 import java.io.BufferedReader;
@@ -27,6 +28,16 @@ public class AocUtil {
 
     public static <A, B> Stream<Tuple2<A, B>> cartesianProduct(Collection<A> listA, Collection<B> listB) {
         return listA.stream().flatMap(a -> listB.stream().map(b -> new Tuple2<>(a, b)));
+    }
+
+    public static <T> void printGrid(List<? extends List<T>> grid) {
+        printGrid(grid, " ");
+    }
+
+    public static <T> void printGrid(List<? extends List<T>> grid, String separator) {
+        for (List<T> row : grid) {
+            System.out.println(Joiner.on(separator).join(row));
+        }
     }
 
 }

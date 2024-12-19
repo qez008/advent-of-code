@@ -28,18 +28,13 @@ class Day18 implements Solution {
         return result.x() + "," + result.y();
     }
 
-    record State(IntVector2 pos, int steps) {
-
-        int value(IntVector2 exit) {
-            return steps + pos.manhattanDistance(exit);
-        }
-    }
+    record State(IntVector2 pos, int steps) {}
 
     Optional<Integer> solve(int fallen) {
         var bounds = new Rect(IntVector2.ZERO, exit);
         var memorySpace = createSpace(exit, fallingBytes, fallen);
 
-        var queue = new PriorityQueue<State>(Comparator.comparing(s -> s.value(exit)));
+        var queue = new ArrayDeque<State>();
         queue.add(new State(IntVector2.ZERO, 0));
 
         var visited = new HashSet<IntVector2>();
@@ -48,11 +43,11 @@ class Day18 implements Solution {
             if (pos.equals(exit)) {
                 return Optional.of(steps);
             }
+            if (visited.contains(pos)) {
+                continue;
+            }
             for (var dir : IntVector2.CARDINAL_DIRECTIONS) {
                 var nextPos = pos.plus(dir);
-                if (visited.contains(nextPos)) {
-                    continue;
-                }
                 if (!bounds.contains(nextPos) || pos.getValueFrom(memorySpace) == '#') {
                     continue;
                 }
