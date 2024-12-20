@@ -74,6 +74,10 @@ public record IntVector2(int x, int y) {
         return grid.get(y).get(x);
     }
 
+    public char charFrom(List<String> grid) {
+        return grid.get(y).charAt(x);
+    }
+
     public <T> void setValueIn(List<ArrayList<T>> grid, T c) {
         grid.get(y).set(x, c);
     }
