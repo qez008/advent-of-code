@@ -14,7 +14,7 @@ public record IntVector2(int x, int y) {
     public static final IntVector2 LEFT = new IntVector2(-1, 0);
     public static final IntVector2 RIGHT = new IntVector2(1, 0);
 
-    public static final Set<IntVector2> CARDINAL_DIRECTIONS = Set.of(UP, DOWN, LEFT, RIGHT);
+    public static final Set<IntVector2> CARDINAL_DIRECTIONS = Set.of(UP, RIGHT, DOWN, LEFT);
     public static final Set<IntVector2> VERTICAL_DIRECTIONS = Set.of(UP, DOWN);
     public static final Set<IntVector2> HORIZONTAL_DIRECTIONS = Set.of(LEFT, RIGHT);
 
