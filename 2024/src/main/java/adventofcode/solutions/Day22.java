@@ -82,7 +82,6 @@ class Day22 implements Solution {
             previousValues.add(value);
 
             if (previousValues.size() == 5) {
-//                System.out.println(number);
                 var sequence = seq(previousValues);
                 if (seen.containsKey(sequence)) {
 //                    System.out.println("seen sequence before: " + sequence);
