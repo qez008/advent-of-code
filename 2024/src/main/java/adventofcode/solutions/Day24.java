@@ -1,6 +1,13 @@
 package adventofcode.solutions;
 
-import java.util.*;
+import com.google.common.base.Joiner;
+import lombok.AllArgsConstructor;
+
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -11,14 +18,20 @@ class Day24 implements Solution {
     private final HashMap<String, Boolean> initialData;
     private final List<Gate> gates;
 
-    record Gate(String left, String op, String right, String result) {}
-
-    public Long part1() {
-        var data = solve(Map.of());
-        return convertNumber(data, Map.of(), s -> s.startsWith("z"));
+    @AllArgsConstructor
+    static class Gate{
+        String left;
+        String op;
+        String right;
+        String out;
     }
 
-    HashMap<String, Boolean> solve(Map<String, String> swapped) {
+    public Long part1() {
+        var data = solve(gates);
+        return convertNumber(data, s -> s.startsWith("z"));
+    }
+
+    HashMap<String, Boolean> solve(List<Gate> gates) {
         var data = new HashMap<>(initialData);
         var queue = new LinkedList<>(gates);
 
@@ -28,80 +41,84 @@ class Day24 implements Solution {
                 throw new RuntimeException("stuck");
             }
 
-            if (!data.containsKey(getAlias(gate.left, swapped)) || !data.containsKey(getAlias(gate.right, swapped))) {
+            if (!data.containsKey(gate.left) || !data.containsKey((gate.right))) {
                 queue.add(gate);
                 continue;
             }
-            var left = data.get(getAlias(gate.left, swapped));
-            var right = data.get(getAlias(gate.right, swapped));
+            var left = data.get(gate.left);
+            var right = data.get(gate.right);
             var result = switch (gate.op) {
                 case "AND" -> left && right;
                 case "OR" -> left || right;
                 case "XOR" -> left ^ right;
                 default -> throw new IllegalStateException("Unexpected value: " + gate.op);
             };
-            data.put(getAlias(gate.result, swapped), result);
+            data.put(gate.out, result);
         }
         return data;
     }
 
-    String getAlias(String name, Map<String, String> swappedGates) {
-        return swappedGates.getOrDefault(name, name);
-    }
-
     public String part2() {
-        var gateNames = gates
+        var nxz = gates
                 .stream()
-                .flatMap(gate -> Stream.of(gate.left, gate.right, gate.result))
-                .collect(Collectors.toSet());
+                .filter(gate -> !gate.op.equals("XOR") && gate.out.charAt(0) == 'z')
+                .filter(gate -> !gate.out.equals("z45"))
+                .toList();
 
-        for (var gateA : gateNames) {
-            for (var gateB : gateNames) {
-                for (var gateC : gateNames) {
-                    for (var gateD : gateNames) {
-                        if (Stream.of(gateA, gateB, gateC, gateD).distinct().count() < 4) {
-                            continue;
-                        }
-                        var swapped = new HashMap<String, String>();
-                        swapped.put(gateA, gateB);
-                        swapped.put(gateB, gateA);
-                        swapped.put(gateC, gateD);
-                        swapped.put(gateD, gateC);
+        var xy = List.of('x', 'y');
+        var xnz = gates
+                .stream()
+                .filter(gate -> gate.op.equals("XOR"))
+                .filter(gate -> !xy.contains(gate.left.charAt(0)))
+                .filter(gate -> !xy.contains(gate.right.charAt(0)))
+                .filter(gate -> gate.out.charAt(0) != 'z')
+                .toList();
 
-                        //                        System.out.println(swapped);
-
-                        try {
-                            var data = solve(swapped);
-                            var x = convertNumber(data, swapped, s -> s.startsWith("x"));
-                            var y = convertNumber(data, swapped, s -> s.startsWith("y"));
-                            var z = convertNumber(data, swapped, s -> s.startsWith("z"));
-                            System.out.println(swapped.values().stream().sorted().toList());
-                            System.out.println(x + "+" + y + "=" + z);
-                            if (x + y == z) {
-                                return Stream
-                                        .of(gateA, gateB, gateC, gateD)
-                                        .sorted()
-                                        .collect(Collectors.joining(","));
-                            }
-                        } catch (RuntimeException e) {
-                            continue;
-                        }
-                    }
-                }
-            }
+        for (var gate : xnz) {
+            var b = nxz.stream().filter(it -> it.out.equals(foo(gate.out))).findFirst().orElseThrow();
+            var temp = gate.out;
+            gate.out = b.out;
+            b.out = temp;
         }
-        return null;
+
+        var x = convertNumber(initialData, s -> s.startsWith("x"));
+        var y = convertNumber(initialData, s -> s.startsWith("y"));
+        var z = convertNumber(solve(gates), s -> s.startsWith("z"));
+        var falseCarry = (x + y) ^ Long.numberOfTrailingZeros(z);
+
+        var remainingBadGates = gates
+                .stream()
+                ;
+        var xsds = Stream
+                .of(nxz.stream(), xnz.stream(), remainingBadGates)
+                .flatMap(Function.identity())
+                .map(g -> g.out)
+                .sorted()
+                .toList();
+        return Joiner.on(",").join(xsds);
     }
 
-    long convertNumber(
-            Map<String, Boolean> data,
-            Map<String, String> swapped,
-            Predicate<String> predicate
-    ) {
+    String foo(String s) {
+        var options = gates.stream().filter(it -> it.left.equals(s) || it.right.equals(s));
+        var a = options
+                .filter(it -> it.out.startsWith("z"))
+                .findFirst()
+                .map(it -> {
+                    var x = Integer.parseInt(it.out.substring(1)) - 1;
+                    return "z" + String.format("%02d", x);
+                });
+        if (a.isPresent()) {
+            return a.get();
+        }
+
+        return "";
+    }
+
+    long convertNumber(Map<String, Boolean> data, Predicate<String> predicate) {
         var bits = data
                 .entrySet()
                 .stream()
-                .filter(e -> predicate.test(swapped.getOrDefault(e.getKey(), e.getKey())))
+                .filter(e -> predicate.test(e.getKey()))
                 .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .toList();

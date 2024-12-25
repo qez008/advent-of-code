@@ -53,7 +53,7 @@ class Day24Test implements AocTest {
 
     @Test
     void two() {
-        assertEquals(4L, real().part2());
+        assertEquals("", real().part2());
     }
 
 }
