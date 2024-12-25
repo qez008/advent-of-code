@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @lombok.RequiredArgsConstructor
@@ -19,11 +17,16 @@ class Day24 implements Solution {
     private final List<Gate> gates;
 
     @AllArgsConstructor
-    static class Gate{
+    static class Gate {
         String left;
         String op;
         String right;
         String out;
+
+        @Override
+        public String toString() {
+            return left + " " + op + " " + right + " -> " + out;
+        }
     }
 
     public Long part1() {
@@ -59,59 +62,48 @@ class Day24 implements Solution {
     }
 
     public String part2() {
-        var nxz = gates
+        var xy = List.of('x', 'y');
+
+        var a = gates
                 .stream()
                 .filter(gate -> !gate.op.equals("XOR") && gate.out.charAt(0) == 'z')
                 .filter(gate -> !gate.out.equals("z45"))
                 .toList();
-
-        var xy = List.of('x', 'y');
-        var xnz = gates
+        var b = gates
                 .stream()
                 .filter(gate -> gate.op.equals("XOR"))
                 .filter(gate -> !xy.contains(gate.left.charAt(0)))
                 .filter(gate -> !xy.contains(gate.right.charAt(0)))
                 .filter(gate -> gate.out.charAt(0) != 'z')
                 .toList();
-
-        for (var gate : xnz) {
-            var b = nxz.stream().filter(it -> it.out.equals(foo(gate.out))).findFirst().orElseThrow();
-            var temp = gate.out;
-            gate.out = b.out;
-            b.out = temp;
-        }
-
-        var x = convertNumber(initialData, s -> s.startsWith("x"));
-        var y = convertNumber(initialData, s -> s.startsWith("y"));
-        var z = convertNumber(solve(gates), s -> s.startsWith("z"));
-        var falseCarry = (x + y) ^ Long.numberOfTrailingZeros(z);
-
-        var remainingBadGates = gates
+        var c = gates
                 .stream()
-                ;
-        var xsds = Stream
-                .of(nxz.stream(), xnz.stream(), remainingBadGates)
-                .flatMap(Function.identity())
-                .map(g -> g.out)
+                .filter(gate -> gate.op.equals("XOR"))
+                .filter(gate -> !(gate.left.endsWith("00") || gate.right.endsWith("00")))
+                .filter(gate -> xy.contains(gate.left.charAt(0)))
+                .filter(gate -> xy.contains(gate.right.charAt(0)))
+                .filter(gate -> gates
+                        .stream()
+                        .filter(g -> g.op.equals("XOR"))
+                        .noneMatch(g -> gate.out.equals(g.left) || gate.out.equals(g.right)))
+                .toList();
+        var d = gates
+                .stream()
+                .filter(gate -> gate.op.equals("AND"))
+                .filter(gate -> !(gate.left.endsWith("00") || gate.right.endsWith("00")))
+                .filter(gate -> gates
+                        .stream()
+                        .noneMatch(g -> g.op.equals("OR") && (gate.out.equals(g.left) || gate.out.equals(g.right))))
+                .toList();
+
+        var sortedOutputs = Stream
+                .of(b, a, c, d)
+                .flatMap(xs -> xs.stream().map(x -> x.out))
+                .distinct()
                 .sorted()
                 .toList();
-        return Joiner.on(",").join(xsds);
-    }
 
-    String foo(String s) {
-        var options = gates.stream().filter(it -> it.left.equals(s) || it.right.equals(s));
-        var a = options
-                .filter(it -> it.out.startsWith("z"))
-                .findFirst()
-                .map(it -> {
-                    var x = Integer.parseInt(it.out.substring(1)) - 1;
-                    return "z" + String.format("%02d", x);
-                });
-        if (a.isPresent()) {
-            return a.get();
-        }
-
-        return "";
+        return Joiner.on(",").join(sortedOutputs);
     }
 
     long convertNumber(Map<String, Boolean> data, Predicate<String> predicate) {

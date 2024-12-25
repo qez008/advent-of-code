@@ -47,13 +47,8 @@ class Day24Test implements AocTest {
     }
 
     @Test
-    void example2() {
-        assertEquals(4L, sample().part2());
-    }
-
-    @Test
     void two() {
-        assertEquals("", real().part2());
+        assertEquals("dkr,ggk,hhh,htp,rhv,z05,z15,z20", real().part2());
     }
 
 }
