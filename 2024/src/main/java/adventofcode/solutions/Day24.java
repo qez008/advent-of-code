@@ -1,7 +1,6 @@
 package adventofcode.solutions;
 
 import com.google.common.base.Joiner;
-import lombok.AllArgsConstructor;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -13,37 +12,19 @@ import java.util.stream.Stream;
 @lombok.RequiredArgsConstructor
 class Day24 implements Solution {
 
+    private static final List<Character> XY = List.of('x', 'y');
+
     private final HashMap<String, Boolean> initialData;
     private final List<Gate> gates;
 
-    @AllArgsConstructor
-    static class Gate {
-        String left;
-        String op;
-        String right;
-        String out;
+    record Gate(String left, String op, String right, String out) {}
 
-        @Override
-        public String toString() {
-            return left + " " + op + " " + right + " -> " + out;
-        }
-    }
-
+    @Override
     public Long part1() {
-        var data = solve(gates);
-        return convertNumber(data, s -> s.startsWith("z"));
-    }
-
-    HashMap<String, Boolean> solve(List<Gate> gates) {
         var data = new HashMap<>(initialData);
         var queue = new LinkedList<>(gates);
 
-        var i = 0;
         while (queue.poll() instanceof Gate gate) {
-            if (i++ > gates.size() * 100) {
-                throw new RuntimeException("stuck");
-            }
-
             if (!data.containsKey(gate.left) || !data.containsKey((gate.right))) {
                 queue.add(gate);
                 continue;
@@ -58,66 +39,61 @@ class Day24 implements Solution {
             };
             data.put(gate.out, result);
         }
-        return data;
-    }
-
-    public String part2() {
-        var xy = List.of('x', 'y');
-
-        var a = gates
-                .stream()
-                .filter(gate -> !gate.op.equals("XOR") && gate.out.charAt(0) == 'z')
-                .filter(gate -> !gate.out.equals("z45"))
-                .toList();
-        var b = gates
-                .stream()
-                .filter(gate -> gate.op.equals("XOR"))
-                .filter(gate -> !xy.contains(gate.left.charAt(0)))
-                .filter(gate -> !xy.contains(gate.right.charAt(0)))
-                .filter(gate -> gate.out.charAt(0) != 'z')
-                .toList();
-        var c = gates
-                .stream()
-                .filter(gate -> gate.op.equals("XOR"))
-                .filter(gate -> !(gate.left.endsWith("00") || gate.right.endsWith("00")))
-                .filter(gate -> xy.contains(gate.left.charAt(0)))
-                .filter(gate -> xy.contains(gate.right.charAt(0)))
-                .filter(gate -> gates
-                        .stream()
-                        .filter(g -> g.op.equals("XOR"))
-                        .noneMatch(g -> gate.out.equals(g.left) || gate.out.equals(g.right)))
-                .toList();
-        var d = gates
-                .stream()
-                .filter(gate -> gate.op.equals("AND"))
-                .filter(gate -> !(gate.left.endsWith("00") || gate.right.endsWith("00")))
-                .filter(gate -> gates
-                        .stream()
-                        .noneMatch(g -> g.op.equals("OR") && (gate.out.equals(g.left) || gate.out.equals(g.right))))
-                .toList();
-
-        var sortedOutputs = Stream
-                .of(b, a, c, d)
-                .flatMap(xs -> xs.stream().map(x -> x.out))
-                .distinct()
-                .sorted()
-                .toList();
-
-        return Joiner.on(",").join(sortedOutputs);
-    }
-
-    long convertNumber(Map<String, Boolean> data, Predicate<String> predicate) {
         var bits = data
                 .entrySet()
                 .stream()
-                .filter(e -> predicate.test(e.getKey()))
+                .filter(e -> e.getKey().charAt(0) == 'z')
                 .sorted(Map.Entry.comparingByKey())
                 .map(Map.Entry::getValue)
                 .toList();
-        var result = 0L;
+        var ans = 0L;
         for (var b : bits.reversed()) {
-            result = (result << 1) | (b ? 1 : 0);
+            ans = (ans << 1) | (b ? 1 : 0);
         }
-        return result;
+        return ans;
+    }
+
+    @Override
+    public String part2() {
+        var pred = rule1().or(rule2()).or(rule3(gates)).or(rule4(gates));
+        var badWires = gates.stream().filter(pred).map(Gate::out).distinct().sorted().toList();
+        return Joiner.on(",").join(badWires);
+    }
+
+    Predicate<Gate> rule1() {
+        return gate -> !gate.op.equals("XOR")
+                       && gate.out.charAt(0) == 'z'
+                       && !gate.out.equals("z45");
+    }
+
+    Predicate<Gate> rule2() {
+        return gate -> gate.op.equals("XOR")
+                       && !XY.contains(gate.left.charAt(0))
+                       && !XY.contains(gate.right.charAt(0))
+                       && gate.out.charAt(0) != 'z';
+    }
+
+    Predicate<Gate> rule3(List<Gate> gates) {
+        var xorIns = gates
+                .stream()
+                .filter(g -> g.op.equals("XOR"))
+                .flatMap(g -> Stream.of(g.left, g.right))
+                .toList();
+        return gate -> gate.op.equals("XOR")
+                       && !(gate.left.endsWith("00") || gate.right.endsWith("00"))
+                       && XY.contains(gate.left.charAt(0))
+                       && XY.contains(gate.right.charAt(0))
+                       && xorIns.stream().noneMatch(gate.out::equals);
+    }
+
+    Predicate<Gate> rule4(List<Gate> gates) {
+        var orIns = gates
+                .stream()
+                .filter(g -> g.op.equals("OR"))
+                .flatMap(g -> Stream.of(g.left, g.right))
+                .toList();
+        return gate -> gate.op.equals("AND")
+                       && !(gate.left.endsWith("00") || gate.right.endsWith("00"))
+                       && orIns.stream().noneMatch(gate.out::equals);
     }
 }
