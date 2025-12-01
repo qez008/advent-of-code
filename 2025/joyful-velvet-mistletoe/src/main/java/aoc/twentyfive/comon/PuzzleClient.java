@@ -17,7 +17,7 @@ public class PuzzleClient {
     private final OkHttpClient client = new OkHttpClient();
 
     public List<String> getPuzzleInput(int year, int day) {
-        var filePath = Paths.get("inputs/%dD%02d.txt".formatted(year, day));
+        var filePath = Paths.get("inputs/D%02d.txt".formatted(day));
         if (Files.exists(filePath)) {
             println("File already exists");
             return readInputFromFile(filePath);

@@ -2,12 +2,58 @@ package aoc.twentyfive.puzzles;
 
 import aoc.twentyfive.comon.InputUtil;
 
+import java.util.List;
+
+import static aoc.twentyfive.comon.MathUtil.posMod;
 import static java.lang.IO.println;
+import static java.lang.Math.abs;
 
-class D01 {
+class D01 extends PuzzleSolver<List<String>> {
 
-    void main() {
-        var lines = InputUtil.readFile("test.txt");
-        println(lines);
+    @Override public List<String> parseInput() {
+        return InputUtil.getInput(1);
+    }
+
+    @Override public int part1(List<String> input) {
+        var pointer = 50;
+        var zeroCount = 0;
+
+        for (var line : input) {
+            var dir = line.charAt(0);
+            var num = Integer.parseInt(line.substring(1));
+            if (dir == 'L') {
+                pointer -= num;
+            } else {
+                pointer += num;
+            }
+            pointer = posMod(pointer, 100);
+            if (pointer == 0) {
+                zeroCount++;
+            }
+            println("%s -> %d".formatted(line, pointer));
+        }
+        return zeroCount;
+    }
+
+    @Override public int part2(List<String> input) {
+        var pointer = 50;
+        var zeroClicks = 0;
+
+        for (var line : input) {
+            var num = Integer.parseInt(line.substring(1));
+            var next = line.charAt(0) == 'L' ? pointer - num : pointer + num;
+
+            if (next == 0) {
+                zeroClicks++;
+            } else if (next < 0) {
+                var y = pointer == 0 ? 0 : 1; // if already on zero, count one less
+                zeroClicks += y + abs(next) / 100;
+            } else if (next >= 100) {
+                zeroClicks += next / 100;
+            }
+
+            pointer = posMod(next, 100);
+        }
+        return zeroClicks;
     }
 }

@@ -10,9 +10,15 @@ import java.util.List;
 @UtilityClass
 public class InputUtil {
 
-    public List<String> readFile(String name) {
+    private static final PuzzleClient puzzleClient = new PuzzleClient();
+
+    public List<String> getInput(int day) {
+        return puzzleClient.getPuzzleInput(2025, day);
+    }
+
+    public List<String> getSample(int day) {
         try {
-            return Files.readAllLines(Paths.get("inputs/%s".formatted(name)));
+            return Files.readAllLines(Paths.get("inputs/D%02ds.txt".formatted(day)));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
