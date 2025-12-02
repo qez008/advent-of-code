@@ -5,7 +5,6 @@ import aoc.twentyfive.comon.InputUtil;
 import java.util.List;
 
 import static aoc.twentyfive.comon.MathUtil.posMod;
-import static java.lang.IO.println;
 import static java.lang.Math.abs;
 
 class D01 extends PuzzleSolver<List<String>> {
@@ -14,14 +13,13 @@ class D01 extends PuzzleSolver<List<String>> {
         return InputUtil.getInput(1);
     }
 
-    @Override public int part1(List<String> input) {
+    @Override public long part1(List<String> input) {
         var pointer = 50;
         var zeroCount = 0;
 
         for (var line : input) {
-            var dir = line.charAt(0);
             var num = Integer.parseInt(line.substring(1));
-            if (dir == 'L') {
+            if (line.charAt(0) == 'L') {
                 pointer -= num;
             } else {
                 pointer += num;
@@ -30,12 +28,11 @@ class D01 extends PuzzleSolver<List<String>> {
             if (pointer == 0) {
                 zeroCount++;
             }
-            println("%s -> %d".formatted(line, pointer));
         }
         return zeroCount;
     }
 
-    @Override public int part2(List<String> input) {
+    @Override public long part2(List<String> input) {
         var pointer = 50;
         var zeroClicks = 0;
 
@@ -51,7 +48,6 @@ class D01 extends PuzzleSolver<List<String>> {
             } else if (next >= 100) {
                 zeroClicks += next / 100;
             }
-
             pointer = posMod(next, 100);
         }
         return zeroClicks;
