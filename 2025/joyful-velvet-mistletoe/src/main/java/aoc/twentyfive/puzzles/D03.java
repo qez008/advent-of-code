@@ -46,18 +46,15 @@ public class D03 extends PuzzleSolver<List<List<Integer>>> {
         return lists
                 .stream()
                 .map(bank -> {
-                    var batteries = new ArrayList<Battery>();
-                    batteries.add(new Battery(-1, 0));
+                    var sum = 0L;
+                    var battery = new Battery(-1, 0);
                     for (var i = 0; i < 12; i++) {
-                        var prevBattery = batteries.get(i);
-                        var from = prevBattery.index + 1;
+                        var from = battery.index + 1;
                         var to = bank.size() - (11 - i);
-                        batteries.add(findBestBattery(bank, from, to));
+                        battery = findBestBattery(bank, from, to);
+                        sum = sum * 10 + battery.joltage;
                     }
-
-                    return Long.parseLong(
-                            batteries.stream().map(x -> String.valueOf(x.joltage)).reduce("", (a, b) -> a + b)
-                    );
+                    return sum;
                 })
 //                .peek(IO::println)
                 .reduce(0L, Long::sum);

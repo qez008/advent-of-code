@@ -30,8 +30,7 @@ class D02 extends PuzzleSolver<List<String>> {
                 .map(Range::fromString)
                 .map(x -> {
                     var count = 0L;
-                    var l = x.start;
-                    while (l <= x.end) {
+                    for (var l = x.start; l <= x.end; l++) {
                         var str = String.valueOf(l);
                         if (str.length() % 2 == 0) {
                             var middle = str.length() / 2;
@@ -41,7 +40,6 @@ class D02 extends PuzzleSolver<List<String>> {
                                 count += l;
                             }
                         }
-                        l++;
                     }
                     return count;
                 })
