@@ -1,4 +1,4 @@
-package aoc.twentyfive.comon;
+package aoc.twentyfive.common;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;

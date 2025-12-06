@@ -1,4 +1,4 @@
-package aoc.twentyfive.comon;
+package aoc.twentyfive.common;
 
 public record Index2D(int x, int y) {
 

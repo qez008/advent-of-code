@@ -1,8 +1,8 @@
 package aoc.twentyfive.puzzles;
 
-import aoc.twentyfive.comon.GridUtil;
-import aoc.twentyfive.comon.Index2D;
-import aoc.twentyfive.comon.InputUtil;
+import aoc.twentyfive.common.GridUtil;
+import aoc.twentyfive.common.Index2D;
+import aoc.twentyfive.common.InputUtil;
 import io.vavr.control.Try;
 
 import java.util.List;

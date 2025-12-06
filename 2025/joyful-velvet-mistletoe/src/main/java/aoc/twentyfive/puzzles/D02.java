@@ -1,6 +1,6 @@
 package aoc.twentyfive.puzzles;
 
-import aoc.twentyfive.comon.InputUtil;
+import aoc.twentyfive.common.InputUtil;
 
 import java.util.Arrays;
 import java.util.List;

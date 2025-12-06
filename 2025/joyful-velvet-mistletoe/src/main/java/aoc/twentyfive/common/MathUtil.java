@@ -1,4 +1,4 @@
-package aoc.twentyfive.comon;
+package aoc.twentyfive.common;
 
 import lombok.experimental.UtilityClass;
 

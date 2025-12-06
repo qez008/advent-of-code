@@ -1,10 +1,10 @@
 package aoc.twentyfive.puzzles;
 
-import aoc.twentyfive.comon.InputUtil;
+import aoc.twentyfive.common.InputUtil;
 
 import java.util.List;
 
-import static aoc.twentyfive.comon.MathUtil.posMod;
+import static aoc.twentyfive.common.MathUtil.posMod;
 import static java.lang.Math.abs;
 
 class D01 extends PuzzleSolver<List<String>> {
