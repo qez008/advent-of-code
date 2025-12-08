@@ -10,7 +10,7 @@ abstract class PuzzleSolver<Input> {
 
     void main() {
         var input = parseInput();
-        println(part1(input));
-        println(part2(input));
+        println("p1=" + part1(input));
+        println("p2=" + part2(input));
     }
 }
